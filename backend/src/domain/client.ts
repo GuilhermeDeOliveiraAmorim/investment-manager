@@ -8,6 +8,10 @@ export class Client {
     public status: ClientStatus = "active"
   ) {}
 
+  static create(name: string, email: string, status: ClientStatus): Client {
+    return new Client(crypto.randomUUID(), name, email, status);
+  }
+
   update(name: string, email: string, status: ClientStatus) {
     this.name = name;
     this.email = email;

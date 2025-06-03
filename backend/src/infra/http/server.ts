@@ -1,11 +1,11 @@
 import Fastify from "fastify";
 import swagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import { logger } from "./logger";
 
 export async function buildServer() {
   const server = Fastify();
 
-  // Swagger setup
   await server.register(swagger, {
     swagger: {
       info: {
@@ -24,8 +24,15 @@ export async function buildServer() {
     },
   });
 
-  // Routes
-  server.get("/ping", async () => ({ pong: "it works!" }));
+  server.get("/ping", async () => {
+    logger.info({
+      code: "PING",
+      message: "Ping endpoint hit",
+      layer: "infra",
+      meta: { timestamp: new Date().toISOString() },
+    });
+    return { pong: "it works!" };
+  });
 
   return server;
 }

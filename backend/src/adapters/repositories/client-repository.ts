@@ -44,7 +44,6 @@ export class PrismaClientRepository implements ClientRepository {
   async findById(id: string): Promise<Client | null> {
     const found = await this.prisma.client.findUnique({
       where: { id },
-      include: { assets: true },
     });
 
     if (!found) return null;

@@ -1,6 +1,6 @@
 import { Asset } from "../../domain/asset";
 import { AssetRepository } from "../../domain/repositories/asset-repository";
-import { logger } from "../../infra/http/logger";
+import { logger } from "../../infra/logger";
 
 export type FindAllAssetsOutputDTO = {
   assets: Asset[];

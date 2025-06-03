@@ -2,7 +2,7 @@ import { Allocation } from "../../domain/allocation";
 import { Client } from "../../domain/client";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
 import { ClientRepository } from "../../domain/repositories/client-repository";
-import { logger } from "../../infra/http/logger";
+import { logger } from "../../infra/logger";
 
 export type FindClientByIdInputDTO = {
   id: string;

@@ -1,6 +1,6 @@
 import { Client } from "../../domain/client";
 import { ClientRepository } from "../../domain/repositories/client-repository";
-import { logger } from "../../infra/http/logger";
+import { logger } from "../../infra/logger";
 
 export type FindAllClientsOutputDTO = {
   clients: Client[];

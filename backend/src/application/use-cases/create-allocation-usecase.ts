@@ -1,6 +1,6 @@
 import { Allocation } from "../../domain/allocation";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
-import { logger } from "../../infra/http/logger";
+import { logger } from "../../infra/logger";
 
 export type CreateAllocationInputDTO = {
   clientId: string;

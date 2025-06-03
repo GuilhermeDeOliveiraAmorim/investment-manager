@@ -59,8 +59,6 @@ export class UpdateClientUseCase {
       },
     });
 
-    return {
-      client: output.client,
-    };
+    return output;
   }
 }

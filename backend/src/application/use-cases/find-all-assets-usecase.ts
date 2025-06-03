@@ -21,6 +21,16 @@ export class FindAllAssetsUseCase {
       assets: await this.assetRepository.findAll(),
     };
 
+    if (output.assets.length === 0) {
+      logger.warn({
+        code: "NO_ASSETS_FOUND",
+        message: "No assets found",
+        layer: "usecase",
+        meta: { timestamp: new Date().toISOString() },
+      });
+      return { assets: [] };
+    }
+
     logger.info({
       code: "FIND_ALL_ASSETS_SUCCESS",
       message: "Assets fetched successfully",

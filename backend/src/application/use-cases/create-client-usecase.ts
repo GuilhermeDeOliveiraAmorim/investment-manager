@@ -23,8 +23,7 @@ export class CreateClientUseCase {
       meta: { timestamp: new Date().toISOString() },
     });
 
-    const client = new Client(
-      crypto.randomUUID(),
+    const client = Client.create(
       input.name,
       input.email,
       input.status ?? "active"

@@ -4,7 +4,6 @@ import { logger } from "../../infra/http/logger";
 
 export type CreateAssetInputDTO = {
   name: string;
-  value: number;
 };
 
 export type CreateAssetOutputDTO = {
@@ -22,7 +21,7 @@ export class CreateAssetUseCase {
       meta: { timestamp: new Date().toISOString() },
     });
 
-    const asset = new Asset(crypto.randomUUID(), input.name, input.value);
+    const asset = Asset.create(input.name);
 
     const output: CreateAssetOutputDTO = {
       asset: await this.assetRepository.create(asset),

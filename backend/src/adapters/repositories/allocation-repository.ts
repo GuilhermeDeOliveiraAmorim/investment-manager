@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
 import { Allocation } from "../../domain/allocation";
 
-export class AllocationPrismaRepository implements AllocationRepository {
+export class PrismaAllocationRepository implements AllocationRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(allocation: Allocation): Promise<Allocation> {

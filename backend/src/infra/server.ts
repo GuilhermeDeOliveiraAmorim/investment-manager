@@ -3,6 +3,7 @@ import swagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import { logger } from "./logger";
 import { assetRoutes } from "./routes/assets-routes";
+import { allocationRoutes } from "./routes/allocation-routes";
 
 export async function buildServer() {
   const server = Fastify();
@@ -26,6 +27,7 @@ export async function buildServer() {
   });
 
   await assetRoutes(server);
+  await allocationRoutes(server);
 
   server.get("/ping", async () => {
     logger.info({

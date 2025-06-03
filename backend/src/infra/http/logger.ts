@@ -20,26 +20,26 @@ type LogLayer =
   | "unknown";
 
 interface LogOptions {
-  code: string;
   message: string;
+  code: string;
   layer?: LogLayer;
   meta?: Record<string, unknown>;
 }
 
 export const logger = {
   info({ code, message, layer = "unknown", meta = {} }: LogOptions) {
-    baseLogger.info({ code, layer, ...meta }, message);
+    baseLogger.info({ code, layer, meta }, message);
   },
 
   warn({ code, message, layer = "unknown", meta = {} }: LogOptions) {
-    baseLogger.warn({ code, layer, ...meta }, message);
+    baseLogger.warn({ code, layer, meta }, message);
   },
 
   error({ code, message, layer = "unknown", meta = {} }: LogOptions) {
-    baseLogger.error({ code, layer, ...meta }, message);
+    baseLogger.error({ code, layer, meta }, message);
   },
 
   fatal({ code, message, layer = "unknown", meta = {} }: LogOptions) {
-    baseLogger.fatal({ code, layer, ...meta }, message);
+    baseLogger.fatal({ code, layer, meta }, message);
   },
 };

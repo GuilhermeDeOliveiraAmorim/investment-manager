@@ -28,10 +28,6 @@ yarn-error.log*
 *.sublime-workspace
 *.sublime-project
 
-# Docker
-docker-compose.override.yml
-**/Dockerfile*
-
 # OS files
 .DS_Store
 Thumbs.db

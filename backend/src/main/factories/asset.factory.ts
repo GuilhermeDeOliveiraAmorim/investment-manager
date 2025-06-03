@@ -10,11 +10,12 @@ export type AssetUseCases = {
 
 export function AssetFactory(): AssetUseCases {
   const assetRepository = new PrismaAssetRepository(prisma);
-  const createAsset = new CreateAssetUseCase(assetRepository);
-  const findAllAssets = new FindAllAssetsUseCase(assetRepository);
+  
+  const create = new CreateAssetUseCase(assetRepository);
+  const findAll = new FindAllAssetsUseCase(assetRepository);
 
   return {
-    create: createAsset,
-    findAll: findAllAssets,
+    create: create,
+    findAll: findAll,
   };
 }

@@ -8,9 +8,10 @@ export type AllocationUseCases = {
 
 export function AllocationFactory(): AllocationUseCases {
   const assetRepository = new PrismaAllocationRepository(prisma);
-  const createAllocation = new CreateAllocationUseCase(assetRepository);
+  
+  const create = new CreateAllocationUseCase(assetRepository);
 
   return {
-    create: createAllocation,
+    create: create,
   };
 }

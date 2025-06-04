@@ -1,14 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { AllocationFactory } from "../factories/allocation.factory";
-import {
-  createAllocationBodySchema,
-  registerAllocationSchemas,
-} from "./allocation-schemas";
+import { createAllocationBodySchema } from "./allocation-schemas";
 
 export async function allocationRoutes(server: FastifyInstance) {
   const allocationUseCases = AllocationFactory();
-
-  registerAllocationSchemas(server);
 
   server.route({
     method: "POST",

@@ -2,15 +2,11 @@ import { FastifyInstance } from "fastify";
 import { ClientFactory } from "../factories/client.factory";
 import {
   createClientBodySchema,
-  findClientByIdParamsSchema,
-  registerClientSchemas,
   updateClientBodySchema,
 } from "./client-schemas";
 
 export async function clientRoutes(server: FastifyInstance) {
   const clientUseCases = ClientFactory();
-
-  registerClientSchemas(server);
 
   server.route({
     method: "POST",

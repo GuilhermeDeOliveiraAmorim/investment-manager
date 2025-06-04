@@ -1,11 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { AssetFactory } from "../factories/asset.factory";
-import { createAssetBodySchema, registerAssetSchemas } from "./assets-schemas";
+import { createAssetBodySchema } from "./assets-schemas";
 
 export async function assetRoutes(server: FastifyInstance) {
   const assetUseCases = AssetFactory();
-
-  registerAssetSchemas(server);
 
   server.route({
     method: "POST",

@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { AssetFactory } from "../factories/asset.factory";
-import { createAssetBodySchema } from "./assets-schemas";
+import { createAssetBodySchema } from "../schemas/assets-schemas";
 
 export async function assetRoutes(server: FastifyInstance) {
   const assetUseCases = AssetFactory();

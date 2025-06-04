@@ -3,7 +3,7 @@ import { ClientFactory } from "../factories/client.factory";
 import {
   createClientBodySchema,
   updateClientBodySchema,
-} from "./client-schemas";
+} from "../schemas/client-schemas";
 
 export async function clientRoutes(server: FastifyInstance) {
   const clientUseCases = ClientFactory();

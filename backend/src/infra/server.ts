@@ -5,9 +5,9 @@ import { logger } from "./logger";
 import { assetRoutes } from "./routes/assets-routes";
 import { allocationRoutes } from "./routes/allocation-routes";
 import { clientRoutes } from "./routes/client-routes";
-import { registerAllocationSchemas } from "./routes/allocation-schemas";
-import { registerAssetSchemas } from "./routes/assets-schemas";
-import { registerClientSchemas } from "./routes/client-schemas";
+import { registerAllocationSchemas } from "./schemas/allocation-schemas";
+import { registerAssetSchemas } from "./schemas/assets-schemas";
+import { registerClientSchemas } from "./schemas/client-schemas";
 import { ZodError } from "zod";
 import { ProblemDetail } from "../exceptions/problem.detail.error";
 

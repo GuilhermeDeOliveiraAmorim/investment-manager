@@ -8,9 +8,43 @@ import { clientRoutes } from "./routes/client-routes";
 import { registerAllocationSchemas } from "./routes/allocation-schemas";
 import { registerAssetSchemas } from "./routes/assets-schemas";
 import { registerClientSchemas } from "./routes/client-schemas";
+import { ZodError } from "zod";
+import { ProblemDetailError } from "../exceptions/problem.detail.error";
 
 export async function buildServer() {
   const server = Fastify();
+
+  server.setErrorHandler((error, request, reply) => {
+    if (error instanceof ZodError) {
+      return reply.status(400).send({
+        type: "https://zod.dev/validation-error",
+        title: "Erro de validação",
+        status: 400,
+        detail: "Um ou mais campos são inválidos.",
+        issues: error.issues,
+        instance: request.url,
+      });
+    }
+
+    if (error instanceof ProblemDetailError) {
+      return reply.status(error.status).send({
+        type: error.type,
+        title: error.title,
+        status: error.status,
+        detail: error.detail,
+        instance: error.instance || request.url,
+        ...(error.extra ?? {}),
+      });
+    }
+
+    return reply.status(500).send({
+      type: "https://httpstatuses.com/500",
+      title: "Erro interno no servidor",
+      status: 500,
+      detail: error.message,
+      instance: request.url,
+    });
+  });
 
   registerAllocationSchemas(server);
   registerAssetSchemas(server);

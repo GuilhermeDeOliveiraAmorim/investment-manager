@@ -32,6 +32,7 @@ export async function clientRoutes(server: FastifyInstance) {
     },
     handler: async (request, reply) => {
       const parseResult = createClientBodySchema.safeParse(request.body);
+
       if (!parseResult.success) {
         return reply.status(400).send({
           error: "Validation failed",
@@ -39,12 +40,8 @@ export async function clientRoutes(server: FastifyInstance) {
         });
       }
 
-      try {
-        const result = await clientUseCases.create.execute(parseResult.data);
-        return reply.status(201).send(result);
-      } catch {
-        return reply.status(500).send({ error: "Internal server error" });
-      }
+      const result = await clientUseCases.create.execute(parseResult.data);
+      return reply.status(201).send(result);
     },
   });
 
@@ -63,12 +60,9 @@ export async function clientRoutes(server: FastifyInstance) {
       description: "Get all clients",
     },
     handler: async (_request, reply) => {
-      try {
-        const result = await clientUseCases.findAll.execute();
-        return reply.status(200).send(result);
-      } catch {
-        return reply.status(500).send({ error: "Internal server error" });
-      }
+      const result = await clientUseCases.findAll.execute();
+
+      return reply.status(200).send(result);
     },
   });
 
@@ -93,17 +87,14 @@ export async function clientRoutes(server: FastifyInstance) {
     },
     handler: async (request, reply) => {
       const { id } = request.params as { id: string };
-      try {
-        const result = await clientUseCases.findById.execute({ id });
 
-        if (!result.client) {
-          return reply.status(404).send({ error: "Client not found" });
-        }
+      const result = await clientUseCases.findById.execute({ id });
 
-        return reply.status(200).send({ client: result.client });
-      } catch {
-        return reply.status(500).send({ error: "Internal server error" });
+      if (!result.client) {
+        return reply.status(404).send({ error: "Client not found" });
       }
+
+      return reply.status(200).send({ client: result.client });
     },
   });
 
@@ -136,7 +127,9 @@ export async function clientRoutes(server: FastifyInstance) {
     },
     handler: async (request, reply) => {
       const { id } = request.params as { id: string };
+
       const parseResult = updateClientBodySchema.safeParse(request.body);
+
       if (!parseResult.success) {
         return reply.status(400).send({
           error: "Validation failed",
@@ -144,19 +137,33 @@ export async function clientRoutes(server: FastifyInstance) {
         });
       }
 
-      try {
-        const result = await clientUseCases.update.execute({
-          id,
-          ...parseResult.data,
-        });
-        return reply.status(200).send(result);
-      } catch (err: any) {
-        if (err.message === "Client not found") {
-          return reply.status(404).send({ error: "Client not found" });
-        }
+      const { email, name, status } = parseResult.data;
 
-        return reply.status(500).send({ error: "Internal server error" });
+      if (email === undefined || name === undefined || status === undefined) {
+        return reply.status(400).send({
+          error: "Validation failed",
+          issues: [
+            ...(email === undefined
+              ? [{ path: ["email"], message: "Email is required" }]
+              : []),
+            ...(name === undefined
+              ? [{ path: ["name"], message: "Name is required" }]
+              : []),
+            ...(status === undefined
+              ? [{ path: ["status"], message: "Status is required" }]
+              : []),
+          ],
+        });
       }
+
+      const result = await clientUseCases.update.execute({
+        id,
+        email,
+        name,
+        status,
+      });
+
+      return reply.status(200).send(result);
     },
   });
 }

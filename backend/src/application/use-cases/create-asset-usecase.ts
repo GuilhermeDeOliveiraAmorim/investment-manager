@@ -59,9 +59,9 @@ export class CreateAssetUseCase {
       ) {
         throw new ProblemDetail(
           "https://investment-manager.com/errors/asset-duplicate",
-          "Ativo duplicado",
+          "Asset already exists",
           409,
-          "Já existe um ativo com esse nome.",
+          "Asset with this name already exists",
           `/assets/${input.name}`,
           { name: input.name }
         );

@@ -1,6 +1,8 @@
 import { Allocation } from "../../domain/allocation";
+import { Asset } from "../../domain/asset";
 import { Client } from "../../domain/client";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
+import { AssetRepository } from "../../domain/repositories/asset-repository";
 import { ClientRepository } from "../../domain/repositories/client-repository";
 import { ProblemDetail } from "../../exceptions/problem.detail.error";
 import { logger } from "../../infra/logger";
@@ -11,13 +13,14 @@ export type FindClientByIdInputDTO = {
 
 export type FindClientByIdOutputDTO = {
   client: Client | null;
-  allocations?: Allocation[];
+  assets: Asset[] | null;
 };
 
 export class FindClientByIdUseCase {
   constructor(
     private readonly clientRepository: ClientRepository,
-    private readonly allocationRepository: AllocationRepository
+    private readonly allocationRepository: AllocationRepository,
+    private readonly assetRepository: AssetRepository
   ) {}
 
   async execute(
@@ -31,15 +34,9 @@ export class FindClientByIdUseCase {
     });
 
     try {
-      const output: FindClientByIdOutputDTO = {
-        client: await this.clientRepository.findById(input.id),
-        allocations: await this.allocationRepository.findByClientId(input.id),
-      };
+      const client = await this.clientRepository.findById(input.id);
 
-      if (
-        !output.client &&
-        (!output.allocations || output.allocations.length === 0)
-      ) {
+      if (!client) {
         logger.warn({
           code: "FIND_CLIENT_BY_ID_NOT_FOUND",
           message: `Client not found with id: ${input.id}`,
@@ -55,6 +52,50 @@ export class FindClientByIdUseCase {
           `/clients/${input.id}`
         );
       }
+
+      const allocations = await this.allocationRepository.findByClientId(
+        input.id
+      );
+
+      if (!allocations || allocations.length === 0) {
+        logger.warn({
+          code: "FIND_CLIENT_BY_ID_NO_ALLOCATIONS",
+          message: `No allocations found for client with id: ${input.id}`,
+          layer: "usecase",
+          meta: { timestamp: new Date().toISOString() },
+        });
+
+        const output: FindClientByIdOutputDTO = {
+          client: client,
+          assets: null,
+        };
+
+        return output;
+      }
+
+      const assets: Asset[] = [];
+
+      for (const allocation of allocations) {
+        const asset = await this.assetRepository.findById(allocation.assetId);
+        if (asset) {
+          assets.push(asset);
+        } else {
+          logger.warn({
+            code: "FIND_CLIENT_BY_ID_ASSET_NOT_FOUND",
+            message: `Asset not found for allocation id: ${allocation.id}`,
+            layer: "usecase",
+            meta: {
+              allocationId: allocation.id,
+              timestamp: new Date().toISOString(),
+            },
+          });
+        }
+      }
+
+      const output: FindClientByIdOutputDTO = {
+        client: client,
+        assets: assets,
+      };
 
       logger.info({
         code: "FIND_CLIENT_BY_ID_SUCCESS",

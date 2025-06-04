@@ -3,19 +3,56 @@ import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
 
 export const createClientBodySchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  status: z.enum(["active", "inactive"]).optional(),
+  name: z
+    .string({
+      required_error: "O nome é obrigatório.",
+      invalid_type_error: "O nome deve ser uma string.",
+    })
+    .min(1, { message: "O nome não pode estar vazio." }),
+
+  email: z
+    .string({
+      required_error: "O email é obrigatório.",
+      invalid_type_error: "O email deve ser uma string.",
+    })
+    .email({ message: "O email deve ser válido." }),
+
+  status: z
+    .enum(["active", "inactive"], {
+      invalid_type_error: "Status deve ser 'active' ou 'inactive'.",
+    })
+    .optional(),
 });
 
 export const updateClientBodySchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  status: z.enum(["active", "inactive"]),
+  name: z
+    .string({
+      invalid_type_error: "O nome deve ser uma string.",
+    })
+    .min(1, { message: "O nome não pode estar vazio." })
+    .optional(),
+
+  email: z
+    .string({
+      invalid_type_error: "O email deve ser uma string.",
+    })
+    .email({ message: "O email deve ser válido." })
+    .optional(),
+
+  status: z
+    .enum(["active", "inactive"], {
+      invalid_type_error: "O status deve ser 'active' ou 'inactive'.",
+    })
+    .optional(),
 });
 
 export const findClientByIdParamsSchema = z.object({
-  id: z.string().uuid(),
+  id: z
+    .string({
+      required_error: "O ID é obrigatório.",
+      invalid_type_error: "O ID deve ser uma string.",
+    })
+    .uuid({ message: "O ID deve estar no formato UUID válido." }),
 });
 
 const clientSchema = z.object({

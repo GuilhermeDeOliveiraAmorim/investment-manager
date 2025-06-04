@@ -5,21 +5,16 @@ import { logger } from "./logger";
 import { assetRoutes } from "./routes/assets-routes";
 import { allocationRoutes } from "./routes/allocation-routes";
 import { clientRoutes } from "./routes/client-routes";
+import { registerAllocationSchemas } from "./routes/allocation-schemas";
+import { registerAssetSchemas } from "./routes/assets-schemas";
+import { registerClientSchemas } from "./routes/client-schemas";
 
 export async function buildServer() {
-  const server = Fastify({
-    logger: {
-      level: "info",
-      transport: {
-        target: "pino-pretty",
-        options: {
-          colorize: true,
-          translateTime: "SYS:standard",
-          ignore: "pid,hostname",
-        },
-      },
-    },
-  });
+  const server = Fastify();
+
+  registerAllocationSchemas(server);
+  registerAssetSchemas(server);
+  registerClientSchemas(server);
 
   await server.register(swagger, {
     swagger: {

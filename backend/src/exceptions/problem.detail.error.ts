@@ -1,4 +1,4 @@
-export class ProblemDetailError extends Error {
+export class ProblemDetail extends Error {
   constructor(
     public readonly type: string,
     public readonly title: string,
@@ -8,6 +8,6 @@ export class ProblemDetailError extends Error {
     public readonly extra?: Record<string, any>
   ) {
     super(title);
-    this.name = "ProblemDetailError";
+    this.name = "ProblemDetail";
   }
 }

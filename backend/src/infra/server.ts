@@ -9,7 +9,7 @@ import { registerAllocationSchemas } from "./routes/allocation-schemas";
 import { registerAssetSchemas } from "./routes/assets-schemas";
 import { registerClientSchemas } from "./routes/client-schemas";
 import { ZodError } from "zod";
-import { ProblemDetailError } from "../exceptions/problem.detail.error";
+import { ProblemDetail } from "../exceptions/problem.detail.error";
 
 export async function buildServer() {
   const server = Fastify();
@@ -26,7 +26,7 @@ export async function buildServer() {
       });
     }
 
-    if (error instanceof ProblemDetailError) {
+    if (error instanceof ProblemDetail) {
       return reply.status(error.status).send({
         type: error.type,
         title: error.title,

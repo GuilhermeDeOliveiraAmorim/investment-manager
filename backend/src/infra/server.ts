@@ -4,9 +4,22 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import { logger } from "./logger";
 import { assetRoutes } from "./routes/assets-routes";
 import { allocationRoutes } from "./routes/allocation-routes";
+import { clientRoutes } from "./routes/client-routes";
 
 export async function buildServer() {
-  const server = Fastify();
+  const server = Fastify({
+    logger: {
+      level: "info",
+      transport: {
+        target: "pino-pretty",
+        options: {
+          colorize: true,
+          translateTime: "SYS:standard",
+          ignore: "pid,hostname",
+        },
+      },
+    },
+  });
 
   await server.register(swagger, {
     swagger: {
@@ -28,6 +41,7 @@ export async function buildServer() {
 
   await assetRoutes(server);
   await allocationRoutes(server);
+  await clientRoutes(server);
 
   server.get("/ping", async () => {
     logger.info({

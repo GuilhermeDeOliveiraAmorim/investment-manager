@@ -1,5 +1,7 @@
+import { Prisma } from "@prisma/client";
 import { Allocation } from "../../domain/allocation";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
+import { ProblemDetailError } from "../../exceptions/problem.detail.error";
 import { logger } from "../../infra/logger";
 
 export type CreateAllocationInputDTO = {
@@ -29,23 +31,66 @@ export class CreateAllocationUseCase {
       },
     });
 
-    const allocation = Allocation.create(
-      input.clientId,
-      input.assetId,
-      input.currentValue
-    );
+    try {
+      const allocation = Allocation.create(
+        input.clientId,
+        input.assetId,
+        input.currentValue
+      );
 
-    const output: CreateAllocationOutputDTO = {
-      allocation: await this.allocationRepository.create(allocation),
-    };
+      const output: CreateAllocationOutputDTO = {
+        allocation: await this.allocationRepository.create(allocation),
+      };
 
-    logger.info({
-      code: "CREATE_ALLOCATION_SUCCESS",
-      message: "Allocation created successfully",
-      layer: "usecase",
-      meta: { allocation, timestamp: new Date().toISOString() },
-    });
+      logger.info({
+        code: "CREATE_ALLOCATION_SUCCESS",
+        message: "Allocation created successfully",
+        layer: "usecase",
+        meta: { allocation, timestamp: new Date().toISOString() },
+      });
 
-    return output;
+      return output;
+    } catch (error) {
+      logger.error({
+        code: "CREATE_ALLOCATION_ERROR",
+        message: "Error creating allocation",
+        layer: "usecase",
+        meta: {
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: new Date().toISOString(),
+          clientId: input.clientId,
+          assetId: input.assetId,
+        },
+      });
+
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        throw new ProblemDetailError(
+          "https://investment-manager.com/errors/allocation-duplicate",
+          "Alocação duplicada",
+          409,
+          "Já existe uma alocação para este cliente e ativo.",
+          `/allocations/${input.clientId}/${input.assetId}`,
+          {
+            clientId: input.clientId,
+            assetId: input.assetId,
+          }
+        );
+      }
+
+      throw new ProblemDetailError(
+        "https://investment-manager.com/errors/allocation-creation-failed",
+        "Allocation creation failed",
+        400,
+        error instanceof Error ? error.message : String(error),
+        `/allocations/${input.clientId}/${input.assetId}`,
+        {
+          clientId: input.clientId,
+          assetId: input.assetId,
+        }
+      );
+    }
   }
 }

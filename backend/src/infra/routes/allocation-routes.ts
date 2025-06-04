@@ -37,14 +37,8 @@ export async function allocationRoutes(server: FastifyInstance) {
         });
       }
 
-      try {
-        const result = await allocationUseCases.create.execute(
-          parseResult.data
-        );
-        return reply.status(201).send(result);
-      } catch {
-        return reply.status(500).send({ error: "Internal server error" });
-      }
+      const result = await allocationUseCases.create.execute(parseResult.data);
+      return reply.status(201).send(result);
     },
   });
 }

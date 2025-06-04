@@ -6,61 +6,78 @@ export class PrismaClientRepository implements ClientRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(client: Client): Promise<Client> {
-    const created = await this.prisma.client.create({
-      data: {
-        id: client.id,
-        name: client.name,
-        email: client.email,
-        status: client.status === "active",
-      },
-    });
+    try {
+      const created = await this.prisma.client.create({
+        data: {
+          id: client.id,
+          name: client.name,
+          email: client.email,
+          status: client.status === "active",
+        },
+      });
 
-    return new Client(
-      created.id,
-      created.name,
-      created.email,
-      created.status ? "active" : "inactive"
-    );
+      return new Client(
+        created.id,
+        created.name,
+        created.email,
+        created.status ? "active" : "inactive"
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update(client: Client): Promise<Client> {
-    const updated = await this.prisma.client.update({
-      where: { id: client.id },
-      data: {
-        name: client.name,
-        email: client.email,
-        status: client.status === "active",
-      },
-    });
+    try {
+      const updated = await this.prisma.client.update({
+        where: { id: client.id },
+        data: {
+          name: client.name,
+          email: client.email,
+          status: client.status === "active",
+        },
+      });
 
-    return new Client(
-      updated.id,
-      updated.name,
-      updated.email,
-      updated.status ? "active" : "inactive"
-    );
+      return new Client(
+        updated.id,
+        updated.name,
+        updated.email,
+        updated.status ? "active" : "inactive"
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findById(id: string): Promise<Client | null> {
-    const found = await this.prisma.client.findUnique({
-      where: { id },
-    });
+    try {
+      const found = await this.prisma.client.findUnique({
+        where: { id },
+      });
 
-    if (!found) return null;
+      if (!found) return null;
 
-    return new Client(
-      found.id,
-      found.name,
-      found.email,
-      found.status ? "active" : "inactive"
-    );
+      return new Client(
+        found.id,
+        found.name,
+        found.email,
+        found.status ? "active" : "inactive"
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findAll(): Promise<Client[]> {
-    const clients = await this.prisma.client.findMany();
+    try {
+      const clients = await this.prisma.client.findMany();
 
-    return clients.map(
-      (c) => new Client(c.id, c.name, c.email, c.status ? "active" : "inactive")
-    );
+      return clients.map(
+        (c) =>
+          new Client(c.id, c.name, c.email, c.status ? "active" : "inactive")
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }

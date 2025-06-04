@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { Allocation } from "../../domain/allocation";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
-import { ProblemDetailError } from "../../exceptions/problem.detail.error";
+import { ProblemDetail } from "../../exceptions/problem.detail.error";
 import { logger } from "../../infra/logger";
 
 export type CreateAllocationInputDTO = {
@@ -67,7 +67,7 @@ export class CreateAllocationUseCase {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === "P2002"
       ) {
-        throw new ProblemDetailError(
+        throw new ProblemDetail(
           "https://investment-manager.com/errors/allocation-duplicate",
           "Alocação duplicada",
           409,
@@ -80,7 +80,7 @@ export class CreateAllocationUseCase {
         );
       }
 
-      throw new ProblemDetailError(
+      throw new ProblemDetail(
         "https://investment-manager.com/errors/allocation-creation-failed",
         "Allocation creation failed",
         400,

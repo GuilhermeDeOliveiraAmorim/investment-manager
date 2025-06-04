@@ -19,7 +19,7 @@ model Client {
 
 model Asset {
   id          String       @id
-  name        String
+  name        String       @unique
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   allocations Allocation[]

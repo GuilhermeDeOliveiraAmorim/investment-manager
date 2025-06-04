@@ -80,7 +80,7 @@ export async function clientRoutes(server: FastifyInstance) {
     method: "GET",
     url: "/clients/:id",
     schema: {
-      params: findClientByIdParamsSchema,
+      params: { $ref: "FindClientByIdParams#" },
       response: {
         200: { $ref: "ClientResponse#" },
         404: {
@@ -116,7 +116,7 @@ export async function clientRoutes(server: FastifyInstance) {
     url: "/clients/:id",
     schema: {
       body: { $ref: "UpdateClientBody#" },
-      params: findClientByIdParamsSchema,
+      params: { $ref: "FindClientByIdParams#" },
       response: {
         200: { $ref: "ClientResponse#" },
         400: {

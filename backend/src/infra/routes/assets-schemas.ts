@@ -27,10 +27,12 @@ export const registerAssetSchemas = (server: FastifyInstance) => {
     ...zodToJsonSchema(createAssetBodySchema),
     $id: "CreateAssetBody",
   });
+
   server.addSchema({
     ...zodToJsonSchema(assetResponseSchema),
     $id: "AssetResponse",
   });
+  
   server.addSchema({
     ...zodToJsonSchema(findAllAssetsResponseSchema),
     $id: "FindAllAssetsResponse",

@@ -22,10 +22,6 @@ export async function clientRoutes(server: FastifyInstance) {
             issues: { type: "array" },
           },
         },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
-        },
       },
       tags: ["Clients"],
       description: "Create a new client",
@@ -51,10 +47,6 @@ export async function clientRoutes(server: FastifyInstance) {
     schema: {
       response: {
         200: { $ref: "FindAllClientsOutput#" },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
-        },
       },
       tags: ["Clients"],
       description: "Get all clients",
@@ -73,14 +65,6 @@ export async function clientRoutes(server: FastifyInstance) {
       params: { $ref: "FindClientByIdInput#" },
       response: {
         200: { $ref: "FindClientByIdOutput#" },
-        404: {
-          type: "object",
-          properties: { error: { type: "string" } },
-        },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
-        },
       },
       tags: ["Clients"],
       description: "Get client by ID",
@@ -112,14 +96,6 @@ export async function clientRoutes(server: FastifyInstance) {
             error: { type: "string" },
             issues: { type: "array" },
           },
-        },
-        404: {
-          type: "object",
-          properties: { error: { type: "string" } },
-        },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
         },
       },
       tags: ["Clients"],

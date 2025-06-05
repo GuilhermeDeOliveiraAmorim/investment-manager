@@ -1,6 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { AllocationFactory } from "../factories/allocation.factory";
-import { createAllocationBodySchema, updateAllocationBodySchema } from "../schemas/allocation-schemas";
+import {
+  createAllocationBodySchema,
+  updateAllocationBodySchema,
+} from "../schemas/allocation-schemas";
 
 export async function allocationRoutes(server: FastifyInstance) {
   const allocationUseCases = AllocationFactory();
@@ -9,7 +12,24 @@ export async function allocationRoutes(server: FastifyInstance) {
     method: "POST",
     url: "/allocations",
     schema: {
-      body: { $ref: "CreateAllocationBody#" },
+      body: {
+        type: "object",
+        properties: {
+          clientId: {
+            type: "string",
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          },
+          assetId: {
+            type: "string",
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          },
+          currentValue: {
+            type: "number",
+            example: "1000000",
+          },
+        },
+        required: ["clientId", "assetId", "currentValue"],
+      },
       response: {
         201: { $ref: "AllocationResponse#" },
         400: {
@@ -18,10 +38,6 @@ export async function allocationRoutes(server: FastifyInstance) {
             error: { type: "string" },
             issues: { type: "array" },
           },
-        },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
         },
       },
       tags: ["Allocations"],
@@ -55,10 +71,6 @@ export async function allocationRoutes(server: FastifyInstance) {
             error: { type: "string" },
             issues: { type: "array" },
           },
-        },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
         },
       },
       tags: ["Allocations"],

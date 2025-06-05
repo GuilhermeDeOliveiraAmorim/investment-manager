@@ -9,7 +9,16 @@ export async function assetRoutes(server: FastifyInstance) {
     method: "POST",
     url: "/assets",
     schema: {
-      body: { $ref: "CreateAssetBody#" },
+      body: {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            example: "Tesouro Direto",
+          },
+        },
+        required: ["name"],
+      },
       response: {
         201: { $ref: "AssetResponse#" },
         400: {
@@ -18,10 +27,6 @@ export async function assetRoutes(server: FastifyInstance) {
             error: { type: "string" },
             issues: { type: "array" },
           },
-        },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
         },
       },
       tags: ["Assets"],
@@ -48,10 +53,6 @@ export async function assetRoutes(server: FastifyInstance) {
     schema: {
       response: {
         200: { $ref: "FindAllAssetsResponse#" },
-        500: {
-          type: "object",
-          properties: { error: { type: "string" } },
-        },
       },
       tags: ["Assets"],
       description: "Get all assets",

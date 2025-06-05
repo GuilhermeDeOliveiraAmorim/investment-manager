@@ -10,6 +10,7 @@ import { registerAssetSchemas } from "./schemas/assets-schemas";
 import { registerClientSchemas } from "./schemas/client-schemas";
 import { ZodError } from "zod";
 import { ProblemDetail } from "../exceptions/problem.detail.error";
+import cors from "@fastify/cors";
 
 export async function buildServer() {
   const server = Fastify({
@@ -18,6 +19,13 @@ export async function buildServer() {
         strict: false,
       },
     },
+  });
+
+  await server.register(cors, {
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   });
 
   server.setErrorHandler((error, request, reply) => {

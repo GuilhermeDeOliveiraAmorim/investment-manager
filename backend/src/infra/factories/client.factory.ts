@@ -1,4 +1,5 @@
 import { PrismaAllocationRepository } from "../../adapters/repositories/allocation-repository";
+import { PrismaAssetRepository } from "../../adapters/repositories/asset-repository";
 import { PrismaClientRepository } from "../../adapters/repositories/client-repository";
 import { CreateClientUseCase } from "../../application/use-cases/create-client-usecase";
 import { FindAllClientsUseCase } from "../../application/use-cases/find-all-clients-usecase";
@@ -16,12 +17,14 @@ export type ClientUseCases = {
 export function ClientFactory(): ClientUseCases {
   const clientRepository = new PrismaClientRepository(prisma);
   const allocationRepository = new PrismaAllocationRepository(prisma);
+  const assetRepository = new PrismaAssetRepository(prisma);
 
   const create = new CreateClientUseCase(clientRepository);
   const findAll = new FindAllClientsUseCase(clientRepository);
   const findById = new FindClientByIdUseCase(
     clientRepository,
-    allocationRepository
+    allocationRepository,
+    assetRepository
   );
   const update = new UpdateClientUseCase(clientRepository);
 

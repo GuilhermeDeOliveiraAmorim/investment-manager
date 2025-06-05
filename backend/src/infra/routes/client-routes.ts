@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
 import { ClientFactory } from "../factories/client.factory";
 import {
-  createClientBodySchema,
-  updateClientBodySchema,
+  createClientInputSchema,
+  updateClientInputSchema,
 } from "../schemas/client-schemas";
 
 export async function clientRoutes(server: FastifyInstance) {
@@ -12,9 +12,9 @@ export async function clientRoutes(server: FastifyInstance) {
     method: "POST",
     url: "/clients",
     schema: {
-      body: { $ref: "CreateClientBody#" },
+      body: { $ref: "CreateClientInput#" },
       response: {
-        201: { $ref: "ClientResponse#" },
+        201: { $ref: "CreateClientOutput#" },
         400: {
           type: "object",
           properties: {
@@ -31,7 +31,7 @@ export async function clientRoutes(server: FastifyInstance) {
       description: "Create a new client",
     },
     handler: async (request, reply) => {
-      const parseResult = createClientBodySchema.safeParse(request.body);
+      const parseResult = createClientInputSchema.safeParse(request.body);
 
       if (!parseResult.success) {
         return reply.status(400).send({
@@ -50,7 +50,7 @@ export async function clientRoutes(server: FastifyInstance) {
     url: "/clients",
     schema: {
       response: {
-        200: { $ref: "FindAllClientsResponse#" },
+        200: { $ref: "FindAllClientsOutput#" },
         500: {
           type: "object",
           properties: { error: { type: "string" } },
@@ -70,9 +70,9 @@ export async function clientRoutes(server: FastifyInstance) {
     method: "GET",
     url: "/clients/:id",
     schema: {
-      params: { $ref: "FindClientByIdParams#" },
+      params: { $ref: "FindClientByIdInput#" },
       response: {
-        200: { $ref: "ClientResponse#" },
+        200: { $ref: "FindClientByIdOutput#" },
         404: {
           type: "object",
           properties: { error: { type: "string" } },
@@ -94,7 +94,7 @@ export async function clientRoutes(server: FastifyInstance) {
         return reply.status(404).send({ error: "Client not found" });
       }
 
-      return reply.status(200).send({ client: result.client });
+      return reply.status(200).send(result);
     },
   });
 
@@ -102,10 +102,10 @@ export async function clientRoutes(server: FastifyInstance) {
     method: "PUT",
     url: "/clients/:id",
     schema: {
-      body: { $ref: "UpdateClientBody#" },
-      params: { $ref: "FindClientByIdParams#" },
+      body: { $ref: "UpdateClientInput#" },
+      params: { $ref: "FindClientByIdInput#" },
       response: {
-        200: { $ref: "ClientResponse#" },
+        200: { $ref: "UpdateClientOutput#" },
         400: {
           type: "object",
           properties: {
@@ -128,7 +128,7 @@ export async function clientRoutes(server: FastifyInstance) {
     handler: async (request, reply) => {
       const { id } = request.params as { id: string };
 
-      const parseResult = updateClientBodySchema.safeParse(request.body);
+      const parseResult = updateClientInputSchema.safeParse(request.body);
 
       if (!parseResult.success) {
         return reply.status(400).send({

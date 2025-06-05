@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
 
-export const createClientBodySchema = z.object({
+export const createClientInputSchema = z.object({
   name: z
     .string({
       required_error: "O nome é obrigatório.",
@@ -24,7 +24,14 @@ export const createClientBodySchema = z.object({
     .optional(),
 });
 
-export const updateClientBodySchema = z.object({
+export const createClientOutputSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  email: z.string().email(),
+  status: z.enum(["active", "inactive"]),
+});
+
+export const updateClientInputSchema = z.object({
   name: z
     .string({
       invalid_type_error: "O nome deve ser uma string.",
@@ -46,7 +53,14 @@ export const updateClientBodySchema = z.object({
     .optional(),
 });
 
-export const findClientByIdParamsSchema = z.object({
+export const updateClientOutputSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  email: z.string().email(),
+  status: z.enum(["active", "inactive"]),
+});
+
+export const findClientByIdInputSchema = z.object({
   id: z
     .string({
       required_error: "O ID é obrigatório.",
@@ -55,44 +69,68 @@ export const findClientByIdParamsSchema = z.object({
     .uuid({ message: "O ID deve estar no formato UUID válido." }),
 });
 
-const clientSchema = z.object({
+const clientSummarySchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
-  email: z.string().email(),
-  status: z.enum(["active", "inactive"]),
+  totalInvested: z.number(),
 });
 
-export const clientResponseSchema = z.object({
-  client: clientSchema,
+const allocationSummarySchema = z.object({
+  id: z.string().uuid(),
+  assetId: z.string().uuid(),
+  assetName: z.string(),
+  currentValue: z.number(),
 });
 
-export const findAllClientsResponseSchema = z.object({
-  clients: z.array(clientSchema),
+export const findClientByIdOutputSchema = z.object({
+  client: clientSummarySchema,
+  allocations: z.array(allocationSummarySchema),
+});
+
+export const findAllClientsOutputSchema = z.object({
+  clients: z.array(
+    z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+      email: z.string().email(),
+      status: z.enum(["active", "inactive"]),
+    })
+  ),
 });
 
 export const registerClientSchemas = (server: FastifyInstance) => {
   server.addSchema({
-    ...zodToJsonSchema(createClientBodySchema),
-    $id: "CreateClientBody",
+    ...zodToJsonSchema(createClientInputSchema),
+    $id: "CreateClientInput",
   });
 
   server.addSchema({
-    ...zodToJsonSchema(updateClientBodySchema),
-    $id: "UpdateClientBody",
+    ...zodToJsonSchema(createClientOutputSchema),
+    $id: "CreateClientOutput",
   });
 
   server.addSchema({
-    ...zodToJsonSchema(findClientByIdParamsSchema),
-    $id: "FindClientByIdParams",
+    ...zodToJsonSchema(updateClientInputSchema),
+    $id: "UpdateClientInput",
   });
 
   server.addSchema({
-    ...zodToJsonSchema(clientResponseSchema),
-    $id: "ClientResponse",
+    ...zodToJsonSchema(updateClientOutputSchema),
+    $id: "UpdateClientOutput",
   });
 
   server.addSchema({
-    ...zodToJsonSchema(findAllClientsResponseSchema),
-    $id: "FindAllClientsResponse",
+    ...zodToJsonSchema(findClientByIdInputSchema),
+    $id: "FindClientByIdInput",
+  });
+
+  server.addSchema({
+    ...zodToJsonSchema(findClientByIdOutputSchema),
+    $id: "FindClientByIdOutput",
+  });
+
+  server.addSchema({
+    ...zodToJsonSchema(findAllClientsOutputSchema),
+    $id: "FindAllClientsOutput",
   });
 };

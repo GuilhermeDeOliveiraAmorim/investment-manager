@@ -29,4 +29,20 @@ export class PrismaAssetRepository implements AssetRepository {
       throw error;
     }
   }
+
+  async findById(id: string): Promise<Asset | null> {
+    try {
+      const asset = await this.prisma.asset.findUnique({
+        where: { id },
+      });
+
+      if (!asset) {
+        return null;
+      }
+
+      return new Asset(asset.id, asset.name);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

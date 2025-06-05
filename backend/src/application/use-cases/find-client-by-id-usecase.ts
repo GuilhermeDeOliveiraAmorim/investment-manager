@@ -129,8 +129,6 @@ export class FindClientByIdUseCase {
         allocations: allocations,
       };
 
-      console.log(`Output: ${JSON.stringify(output)}`);
-
       logger.info({
         code: "FIND_CLIENT_BY_ID_SUCCESS",
         message: `Client found with id: ${input.id}`,

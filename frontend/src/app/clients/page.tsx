@@ -2,6 +2,7 @@
 
 import { Button } from "@app/components/ui/button";
 import { useClients } from "../../hooks/useClients";
+import { ClientCard } from "@app/components/ui/client-card";
 
 export default function ClientsPage() {
   const { data: clients, isLoading, error } = useClients();
@@ -10,18 +11,17 @@ export default function ClientsPage() {
   if (error) return <p>Error loading clients</p>;
 
   return (
-    <div>
-      <h1>Clients</h1>
-      <Button>Add Client</Button>
-      <ul>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Clients</h1>
+        <Button>Add Client</Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {clients?.map((client) => (
-          <li key={client.id}>
-            <a href={`/clients/${client.id}`}>
-              {client.name} ({client.status})
-            </a>
-          </li>
+          <ClientCard key={client.id} client={client} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

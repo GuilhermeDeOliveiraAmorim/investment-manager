@@ -4,9 +4,7 @@ import { ProblemDetail } from "../../exceptions/problem.detail.error";
 import { logger } from "../../infra/logger";
 
 export type UpdateAllocationInputDTO = {
-  id: string;
   allocationId: string;
-  assetId: string;
   currentValue: number;
 };
 
@@ -25,13 +23,13 @@ export class UpdateAllocationUseCase {
       message: "Updating allocation",
       layer: "usecase",
       meta: {
-        allocationId: input.id,
+        allocationId: input.allocationId,
         timestamp: new Date().toISOString(),
       },
     });
 
     try {
-      const allocation = await this.allocationRepository.find(input.id);
+      const allocation = await this.allocationRepository.find(input.allocationId);
 
       if (!allocation) {
         logger.warn({
@@ -39,7 +37,7 @@ export class UpdateAllocationUseCase {
           message: "Allocation not found",
           layer: "usecase",
           meta: {
-            allocationId: input.id,
+            allocationId: input.allocationId,
             timestamp: new Date().toISOString(),
           },
         });
@@ -48,8 +46,8 @@ export class UpdateAllocationUseCase {
           "https://investment-manager.com/errors/allocation-not-found",
           "Allocation not found",
           404,
-          `Allocation with ID ${input.id} not found`,
-          `/allocations/${input.id}`
+          `Allocation with ID ${input.allocationId} not found`,
+          `/allocations/${input.allocationId}`
         );
       }
 
@@ -76,7 +74,7 @@ export class UpdateAllocationUseCase {
         message: "Failed to update allocation",
         layer: "usecase",
         meta: {
-          allocationId: input.id,
+          allocationId: input.allocationId,
           error: error instanceof Error ? error.message : String(error),
           timestamp: new Date().toISOString(),
         },
@@ -87,7 +85,7 @@ export class UpdateAllocationUseCase {
         "Erro ao atualizar a alocação",
         500,
         error instanceof Error ? error.message : "Erro desconhecido",
-        `/allocations/${input.id}`
+        `/allocations/${input.allocationId}`
       );
     }
   }

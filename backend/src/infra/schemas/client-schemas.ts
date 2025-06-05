@@ -80,6 +80,7 @@ const allocationSummarySchema = z.object({
   assetId: z.string().uuid(),
   assetName: z.string(),
   currentValue: z.number(),
+  percentage: z.number(),
 });
 
 export const findClientByIdOutputSchema = z.object({

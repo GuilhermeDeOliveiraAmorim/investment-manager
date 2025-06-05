@@ -18,6 +18,7 @@ export type AllocationsOutputDTO = {
   assetId: string;
   assetName: string;
   currentValue: number;
+  percentage?: number;
 };
 
 export type FindClientByIdInputDTO = {
@@ -99,14 +100,14 @@ export class FindClientByIdUseCase {
         );
 
         if (asset) {
+          totalInvested += clientAllocation.currentValue;
+
           allocations.push({
             id: clientAllocation.id,
             assetId: asset.id,
             assetName: asset.name,
             currentValue: clientAllocation.currentValue,
           });
-
-          totalInvested += clientAllocation.currentValue;
         } else {
           logger.warn({
             code: "FIND_CLIENT_BY_ID_ASSET_NOT_FOUND",
@@ -118,6 +119,12 @@ export class FindClientByIdUseCase {
             },
           });
         }
+      }
+
+      for (const allocation of allocations) {
+        allocation.percentage = Number(
+          ((allocation.currentValue / totalInvested) * 100).toFixed(2)
+        );
       }
 
       const output: FindClientByIdOutputDTO = {

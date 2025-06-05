@@ -40,4 +40,26 @@ export class PrismaAllocationRepository implements AllocationRepository {
       throw error;
     }
   }
+
+  async update(allocation: Allocation): Promise<Allocation> {
+    try {
+      const updated = await this.prisma.allocation.update({
+        where: { id: allocation.id },
+        data: {
+          assetId: allocation.assetId,
+          clientId: allocation.clientId,
+          currentValue: allocation.currentValue,
+        },
+      });
+
+      return new Allocation(
+        updated.id,
+        updated.assetId,
+        updated.clientId,
+        updated.currentValue
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -12,7 +12,13 @@ import { ZodError } from "zod";
 import { ProblemDetail } from "../exceptions/problem.detail.error";
 
 export async function buildServer() {
-  const server = Fastify();
+  const server = Fastify({
+    ajv: {
+      customOptions: {
+        strict: false,
+      },
+    },
+  });
 
   server.setErrorHandler((error, request, reply) => {
     if (error instanceof ZodError) {

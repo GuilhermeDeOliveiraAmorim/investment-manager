@@ -3,7 +3,7 @@ import { FastifyInstance } from "fastify";
 import zodToJsonSchema from "zod-to-json-schema";
 
 export const createAssetBodySchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(2, "É necessário um nome"),
 });
 
 export const assetResponseSchema = z.object({

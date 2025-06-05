@@ -5,6 +5,27 @@ import { Allocation } from "../../domain/allocation";
 export class PrismaAllocationRepository implements AllocationRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
+  async find(allocationId: string): Promise<Allocation> {
+    try {
+      const allocation = await this.prisma.allocation.findUnique({
+        where: { id: allocationId },
+      });
+
+      if (!allocation) {
+        throw new Error(`Allocation with id ${allocationId} not found.`);
+      }
+
+      return new Allocation(
+        allocation.id,
+        allocation.clientId,
+        allocation.assetId,
+        allocation.currentValue
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(allocation: Allocation): Promise<Allocation> {
     try {
       const created = await this.prisma.allocation.create({

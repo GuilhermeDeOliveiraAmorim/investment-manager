@@ -65,9 +65,9 @@ export class CreateClientUseCase {
       ) {
         throw new ProblemDetail(
           "https://investment-manager.com/errors/client-duplicate",
-          "Duplicate client",
+          "Cliente duplicado",
           409,
-          "Client with this email already exists",
+          "O cliente com este e-mail já existe",
           `/clients`,
           { email: input.email }
         );
@@ -75,7 +75,7 @@ export class CreateClientUseCase {
 
       throw new ProblemDetail(
         "https://investment-manager.com/errors/client-creation-failed",
-        "Client creation failed",
+        "Falha na criação do cliente",
         400,
         error instanceof Error ? error.message : String(error),
         `/clients`,

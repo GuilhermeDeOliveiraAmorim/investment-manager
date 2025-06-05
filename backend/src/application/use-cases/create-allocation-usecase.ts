@@ -80,10 +80,27 @@ export class CreateAllocationUseCase {
         );
       }
 
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2003"
+      ) {
+        throw new ProblemDetail(
+          "https://investment-manager.com/errors/allocation-duplicate",
+          "Erro interno",
+          500,
+          "A restrição de chave estrangeira falhou",
+          `/allocations/${input.clientId}/${input.assetId}`,
+          {
+            clientId: input.clientId,
+            assetId: input.assetId,
+          }
+        );
+      }
+
       throw new ProblemDetail(
         "https://investment-manager.com/errors/allocation-creation-failed",
-        "Allocation creation failed",
-        400,
+        "Falha na criação da alocação",
+        500,
         error instanceof Error ? error.message : String(error),
         `/allocations/${input.clientId}/${input.assetId}`,
         {

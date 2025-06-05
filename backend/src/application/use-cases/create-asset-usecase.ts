@@ -59,9 +59,9 @@ export class CreateAssetUseCase {
       ) {
         throw new ProblemDetail(
           "https://investment-manager.com/errors/asset-duplicate",
-          "Asset already exists",
+          "O ativo já existe",
           409,
-          "Asset with this name already exists",
+          "O ativo com este nome já existe",
           `/assets/${input.name}`,
           { name: input.name }
         );
@@ -69,8 +69,8 @@ export class CreateAssetUseCase {
 
       throw new ProblemDetail(
         "https://investment-manager.com/errors/asset-creation-failed",
-        "Asset creation failed",
-        400,
+        "Falha na criação do ativo",
+        500,
         error instanceof Error ? error.message : String(error),
         `/assets`,
         { name: input.name }

@@ -44,9 +44,9 @@ export class UpdateAllocationUseCase {
 
         throw new ProblemDetail(
           "https://investment-manager.com/errors/allocation-not-found",
-          "Allocation not found",
+          "Alocação não encontrada",
           404,
-          `Allocation with ID ${input.allocationId} not found`,
+          `Alocação com ID ${input.allocationId} não encontrada`,
           `/allocations/${input.allocationId}`
         );
       }

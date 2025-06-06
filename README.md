@@ -34,3 +34,21 @@ investment-manager/
 ```bash
 docker-compose up --build
 ```
+
+✅ 1. Acesse o container do backend:
+
+```bash
+docker exec -it investments-backend sh
+```
+
+✅ 2. Aplique as migrações do Prisma:
+
+```bash
+docker exec -it investments-backend sh
+```
+
+✅ 3. Popule a tabela de tipos de ativos com o seed:
+
+```bash
+npx prisma db seed
+```

@@ -14,7 +14,7 @@ export class Allocation {
     return new Allocation(crypto.randomUUID(), clientId, assetId, currentValue);
   }
 
-  update(currentValue: number) {
-    this.currentValue = currentValue;
+  update(newValue: number) {
+    this.currentValue = this.currentValue + newValue;
   }
 }

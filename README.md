@@ -7,8 +7,11 @@ Sistema de gerenciamento de ativos e clientes desenvolvido com arquitetura desac
 ## 🧱 Estrutura do Projeto
 
 investment-manager/
+
 ├── backend/ # API (Node.js, Express, etc.)
+
 ├── frontend/ # Interface web (Next.js)
+
 ├── docker-compose.yml
 
 ---

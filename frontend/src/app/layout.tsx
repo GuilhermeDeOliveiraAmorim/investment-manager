@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { Header } from "@app/components/header";
 import { Footer } from "@app/components/footer";
 import { Container } from "@app/components/container";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <main className="flex-1">
             <Container>{children}</Container>
           </main>
+          <Toaster />
           <Footer />
         </QueryClientProvider>
       </body>

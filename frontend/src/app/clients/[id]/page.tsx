@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useClient } from "@app/hooks/useClients";
+import { AllocateAssetForm } from "@app/components/forms/allocate-asset-form";
 
 export default function ClientDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +20,8 @@ export default function ClientDetailsPage() {
         <strong>Total investido:</strong> R${" "}
         {client.totalInvested.toLocaleString()}
       </p>
+
+      <AllocateAssetForm clientId={client.id} />
 
       <h2 className="text-xl font-semibold mt-4">Alocações</h2>
       <ul className="space-y-2">

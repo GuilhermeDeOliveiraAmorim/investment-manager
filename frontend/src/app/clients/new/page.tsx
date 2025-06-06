@@ -11,7 +11,14 @@ import {
 } from "@app/schemas/client-schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@app/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@app/components/ui/card";
+import { Label } from "@app/components/ui/label";
 
 export default function CreateClientPage() {
   const {
@@ -45,7 +52,7 @@ export default function CreateClientPage() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium">Nome</label>
+              <Label className="block text-sm font-medium">Nome</Label>
               <Input placeholder="Nome" {...register("name")} />
               {errors.name && (
                 <p className="text-sm text-red-500">{errors.name.message}</p>
@@ -53,7 +60,7 @@ export default function CreateClientPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">Email</label>
+              <Label className="block text-sm font-medium">Email</Label>
               <Input placeholder="Email" {...register("email")} />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -61,7 +68,7 @@ export default function CreateClientPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">Status</label>
+              <Label className="block text-sm font-medium">Status</Label>
               <select
                 {...register("status")}
                 className="w-full border rounded px-3 py-2"

@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useUpdateAllocation } from "@app/hooks/useAllocations";
 import { Button } from "../ui/button";
 import { updateAllocationSchema } from "@app/schemas/allocation-schema";
-import { Label } from "@radix-ui/react-label";
+import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { CardContent, CardFooter } from "../ui/card";
 

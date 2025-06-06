@@ -70,7 +70,7 @@ export function AllocateAssetForm({
   return (
     <Card className="mt-6">
       <CardHeader>
-        <CardTitle>Nova Alocação</CardTitle>
+        <CardTitle>Novo Ativo</CardTitle>
         <CardDescription>
           Preencha os dados abaixo para alocar um ativo
         </CardDescription>
@@ -100,12 +100,13 @@ export function AllocateAssetForm({
           </div>
 
           <div>
-            <Label>Valor atual (R$)</Label>
+            <Label>Valor inicial (R$)</Label>
             <Input
               type="number"
               step="0.01"
               {...register("currentValue", { valueAsNumber: true })}
               className="w-full border rounded p-2"
+              placeholder="0.00"
             />
             {errors.currentValue && (
               <p className="text-sm text-red-500">

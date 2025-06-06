@@ -28,8 +28,6 @@ export default function ClientDetailsPage() {
         {client.totalInvested.toLocaleString()}
       </p>
 
-      <AllocateAssetForm clientId={client.id} onAllocated={() => {}} />
-
       <h2 className="text-xl font-semibold mt-4">Alocações</h2>
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {allocations.map((a) => (
@@ -45,6 +43,8 @@ export default function ClientDetailsPage() {
           </Card>
         ))}
       </div>
+
+      <AllocateAssetForm clientId={client.id} onAllocated={() => {}} />
     </div>
   );
 }

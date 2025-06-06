@@ -5,90 +5,78 @@ import { useRouter } from "next/navigation";
 import { Button } from "@app/components/ui/button";
 import { useCreateClient } from "@app/hooks/useClients";
 import { Input } from "@app/components/ui/input";
-import { CreateClientInput } from "@app/types/client";
+import {
+  CreateClientFormData,
+  createClientSchema,
+} from "@app/schemas/create-client-schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateClientPage() {
-  const [form, setForm] = useState<CreateClientInput>({
-    name: "",
-    email: "",
-    status: "active",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateClientFormData>({
+    resolver: zodResolver(createClientSchema),
   });
 
-  const {
-    mutate: createClient,
-    isPending,
-    isSuccess,
-    error,
-  } = useCreateClient();
+  const { mutate: createClient } = useCreateClient();
   const router = useRouter();
+  const [success, setSuccess] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    createClient(form, {
+  const onSubmit = (data: CreateClientFormData) => {
+    createClient(data, {
       onSuccess: () => {
-        setTimeout(() => {
-          router.push("/clients");
-        }, 2000);
+        setSuccess(true);
+        setTimeout(() => router.push("/clients"), 2000);
       },
     });
   };
 
   return (
     <div className="max-w-xl mx-auto mt-10 space-y-6">
-      <h1 className="text-2xl font-bold">Adicionar Cliente</h1>
+      <h1 className="text-2xl font-bold">Novo Cliente</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label className="block text-sm font-medium">Nome</label>
-          <Input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            placeholder="Ex: João da Silva"
-          />
+          <Input placeholder="Nome" {...register("name")} />
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
         </div>
 
         <div>
           <label className="block text-sm font-medium">Email</label>
-          <Input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            placeholder="Ex: joao@email.com"
-          />
+          <Input placeholder="Email" {...register("email")} />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
         </div>
 
         <div>
           <label className="block text-sm font-medium">Status</label>
           <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
+            {...register("status")}
             className="w-full border rounded px-3 py-2"
           >
+            <option value="">Selecione o status</option>
             <option value="active">Ativo</option>
             <option value="inactive">Inativo</option>
           </select>
+          {errors.status && (
+            <p className="text-sm text-red-500">{errors.status.message}</p>
+          )}
         </div>
 
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Salvando..." : "Salvar Cliente"}
-        </Button>
-
-        {isSuccess && (
-          <p className="text-green-600">Cliente criado com sucesso!</p>
-        )}
-        {error && <p className="text-red-600">Erro: {error.message}</p>}
+        <Button type="submit">Criar Cliente</Button>
       </form>
+      {success && (
+        <p className="text-green-600">
+          Cliente criado com sucesso! Redirecionando...
+        </p>
+      )}
     </div>
   );
 }

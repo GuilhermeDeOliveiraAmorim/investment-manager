@@ -6,3 +6,9 @@ export const createAllocationSchema = z.object({
     .number({ invalid_type_error: "Informe um valor numérico válido." })
     .positive("O valor deve ser maior que zero."),
 });
+
+export const updateAllocationSchema = z.object({
+  currentValue: z
+    .number({ invalid_type_error: "Informe um número" })
+    .positive("Valor deve ser maior que zero"),
+});

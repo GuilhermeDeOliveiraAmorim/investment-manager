@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAssets } from "@app/hooks/useAssets";
-import { createAllocationSchema } from "@app/schemas/create-allocation-schema";
+import { createAllocationSchema } from "@app/schemas/allocation-schema";
 import { useCreateAllocation } from "@app/hooks/useAllocations";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";

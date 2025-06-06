@@ -8,7 +8,7 @@ import { Input } from "@app/components/ui/input";
 import {
   CreateClientFormData,
   createClientSchema,
-} from "@app/schemas/create-client-schema";
+} from "@app/schemas/client-schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 

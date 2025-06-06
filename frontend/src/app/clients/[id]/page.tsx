@@ -4,6 +4,12 @@ import { useParams } from "next/navigation";
 import { useClient } from "@app/hooks/useClients";
 import { AllocateAssetForm } from "@app/components/forms/allocate-asset-form";
 import { UpdateAllocationForm } from "@app/components/forms/update-allocation-form";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@app/components/ui/card";
 
 export default function ClientDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,21 +31,20 @@ export default function ClientDetailsPage() {
       <AllocateAssetForm clientId={client.id} onAllocated={() => {}} />
 
       <h2 className="text-xl font-semibold mt-4">Alocações</h2>
-      <ul className="space-y-2">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {allocations.map((a) => (
-          <li key={a.id} className="border p-4 rounded">
-            <div className="font-medium">{a.assetName}</div>
-            <div className="text-sm text-muted-foreground">
-              Valor: R$ {a.currentValue.toLocaleString()} — {a.percentage}%
-            </div>
-            <UpdateAllocationForm
-              clientId={id}
-              allocationId={a.id}
-              initialValue={a.currentValue}
-            />
-          </li>
+          <Card key={a.id}>
+            <CardHeader>
+              <CardTitle>{a.assetName}</CardTitle>
+              <CardDescription>
+                Valor: R$ {a.currentValue.toLocaleString()} — {a.percentage}%
+              </CardDescription>
+            </CardHeader>
+
+            <UpdateAllocationForm clientId={id} allocationId={a.id} />
+          </Card>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

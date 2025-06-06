@@ -7,26 +7,24 @@ import { z } from "zod";
 import { useUpdateAllocation } from "@app/hooks/useAllocations";
 import { Button } from "../ui/button";
 import { updateAllocationSchema } from "@app/schemas/allocation-schema";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "../ui/input";
+import { CardContent, CardFooter } from "../ui/card";
 
 type FormValues = z.infer<typeof updateAllocationSchema>;
 
 interface Props {
   clientId: string;
   allocationId: string;
-  initialValue: number;
 }
 
-export function UpdateAllocationForm({
-  clientId,
-  allocationId,
-  initialValue,
-}: Props) {
+export function UpdateAllocationForm({ clientId, allocationId }: Props) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormValues>({
-    defaultValues: { currentValue: initialValue },
     resolver: zodResolver(updateAllocationSchema),
   });
 
@@ -37,28 +35,35 @@ export function UpdateAllocationForm({
       allocationId,
       currentValue: values.currentValue,
     });
+
+    reset();
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <label className="block">
-        <span className="text-sm">Novo valor (R$)</span>
-        <input
-          type="number"
-          step="0.01"
-          {...register("currentValue", { valueAsNumber: true })}
-          className="input w-full"
-        />
-        {errors.currentValue && (
-          <p className="text-red-500 text-xs mt-1">
-            {errors.currentValue.message}
-          </p>
-        )}
-      </label>
+    <CardContent>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-2">
+        <div>
+          <Label>Adicionar valor (R$)</Label>
+          <Input
+            type="number"
+            step="0.01"
+            {...register("currentValue", { valueAsNumber: true })}
+            className="input w-full border rounded p-2"
+            placeholder="0.00"
+          />
+          {errors.currentValue && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.currentValue.message}
+            </p>
+          )}
+        </div>
 
-      <Button type="submit" disabled={isSubmitting}>
-        Salvar
-      </Button>
-    </form>
+        <CardFooter className="p-0">
+          <Button type="submit" disabled={isSubmitting}>
+            Salvar
+          </Button>
+        </CardFooter>
+      </form>
+    </CardContent>
   );
 }

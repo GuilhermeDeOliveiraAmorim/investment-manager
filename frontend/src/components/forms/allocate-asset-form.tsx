@@ -11,6 +11,14 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 type AllocateAssetFormProps = {
   clientId: string;
@@ -60,44 +68,59 @@ export function AllocateAssetForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-6">
-      <div>
-        <Label>Ativo</Label>
-        <select
-          {...register("assetId")}
-          className="w-full border rounded p-2"
-          defaultValue=""
-        >
-          <option value="" disabled>
-            Selecione um ativo
-          </option>
-          {assets.map((asset) => (
-            <option key={asset.id} value={asset.id}>
-              {asset.name}
-            </option>
-          ))}
-        </select>
-        {errors.assetId && (
-          <p className="text-sm text-red-500">{errors.assetId.message}</p>
-        )}
-      </div>
+    <Card className="mt-6">
+      <CardHeader>
+        <CardTitle>Nova Alocação</CardTitle>
+        <CardDescription>
+          Preencha os dados abaixo para alocar um ativo
+        </CardDescription>
+      </CardHeader>
 
-      <div>
-        <Label>Valor atual (R$)</Label>
-        <Input
-          type="number"
-          step="0.01"
-          {...register("currentValue", { valueAsNumber: true })}
-          className="w-full border rounded p-2"
-        />
-        {errors.currentValue && (
-          <p className="text-sm text-red-500">{errors.currentValue.message}</p>
-        )}
-      </div>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <Label>Ativo</Label>
+            <select
+              {...register("assetId")}
+              className="w-full border rounded p-2"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecione um ativo
+              </option>
+              {assets.map((asset) => (
+                <option key={asset.id} value={asset.id}>
+                  {asset.name}
+                </option>
+              ))}
+            </select>
+            {errors.assetId && (
+              <p className="text-sm text-red-500">{errors.assetId.message}</p>
+            )}
+          </div>
 
-      <Button type="submit" disabled={isPending}>
-        {isPending ? "Alocando..." : "Alocar ativo"}
-      </Button>
-    </form>
+          <div>
+            <Label>Valor atual (R$)</Label>
+            <Input
+              type="number"
+              step="0.01"
+              {...register("currentValue", { valueAsNumber: true })}
+              className="w-full border rounded p-2"
+            />
+            {errors.currentValue && (
+              <p className="text-sm text-red-500">
+                {errors.currentValue.message}
+              </p>
+            )}
+          </div>
+
+          <CardFooter className="p-0">
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Alocando..." : "Alocar ativo"}
+            </Button>
+          </CardFooter>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

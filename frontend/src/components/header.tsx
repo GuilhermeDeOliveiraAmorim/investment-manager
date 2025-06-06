@@ -7,7 +7,6 @@ const navItems = [
   { href: "/", label: "Dashboard" },
   { href: "/clients", label: "Clientes" },
   { href: "/assets", label: "Ativos" },
-  { href: "/allocations", label: "Alocações" },
 ];
 
 export function Header() {

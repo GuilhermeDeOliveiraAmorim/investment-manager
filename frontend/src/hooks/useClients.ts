@@ -5,6 +5,7 @@ import * as clientService from "../services/clients";
 import {
   Client,
   CreateClientInput,
+  FindClientByIdResponse,
   UpdateClientInput,
 } from "@app/types/client";
 
@@ -16,7 +17,7 @@ export function useClients() {
 }
 
 export function useClient(id: string) {
-  return useQuery({
+  return useQuery<FindClientByIdResponse, Error>({
     queryKey: ["client", id],
     queryFn: () => clientService.getClientById(id),
   });

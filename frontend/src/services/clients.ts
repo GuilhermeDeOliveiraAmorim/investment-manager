@@ -3,6 +3,7 @@ import type {
   CreateClientInput,
   UpdateClientInput,
   Client,
+  FindClientByIdResponse,
 } from "../types/client";
 
 export async function getAllClients(): Promise<Client[]> {
@@ -10,9 +11,9 @@ export async function getAllClients(): Promise<Client[]> {
   return data.clients;
 }
 
-export async function getClientById(id: string): Promise<Client> {
-  const { data } = await apiClient.get<{ client: Client }>(`/clients/${id}`);
-  return data.client;
+export async function getClientById(id: string): Promise<FindClientByIdResponse> {
+  const { data } = await apiClient.get<FindClientByIdResponse>(`/clients/${id}`);
+  return data;
 }
 
 export async function createClient(input: CreateClientInput): Promise<Client> {

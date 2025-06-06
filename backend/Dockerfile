@@ -8,6 +8,7 @@ WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package*.json ./
+COPY prisma ./prisma/
 RUN npm install
 
 # Copy application code
@@ -20,4 +21,4 @@ RUN npx prisma generate
 EXPOSE 3001
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD [  "npm", "run", "start:migrate:prod" ]

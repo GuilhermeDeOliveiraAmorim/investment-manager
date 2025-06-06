@@ -12,7 +12,9 @@
     "start": "node dist/main.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "start:migrate:prod": "prisma migrate deploy && npm run start:prod",
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",

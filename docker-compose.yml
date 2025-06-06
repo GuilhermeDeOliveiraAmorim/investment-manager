@@ -26,7 +26,19 @@ services:
       - db
     volumes:
       - ./backend:/app
-      - /app/node_modules
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: investments-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
     command: npm run dev
 
 volumes:

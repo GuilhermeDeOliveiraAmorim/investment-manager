@@ -5,8 +5,8 @@ import { useAssets } from "@app/hooks/useAssets";
 export default function AssetsPage() {
   const { data: assets, isLoading, error } = useAssets();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading clients</p>;
+  if (isLoading) return <p>Carregando...</p>;
+  if (error) return <p>Erro ao carregar ativos</p>;
 
   return (
     <div className="space-y-6">

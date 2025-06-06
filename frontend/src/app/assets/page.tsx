@@ -11,9 +11,13 @@ export default function AssetsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Ativos</h1>
-      <ul className="space-y-4">
+
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {assets?.map((asset) => (
-          <li key={asset.id} className="border rounded-lg p-4 shadow-sm">
+          <li
+            key={asset.id}
+            className="border rounded-lg p-4 shadow-sm hover:shadow-md transition cursor-pointer"
+          >
             <div className="font-semibold">{asset.name}</div>
           </li>
         ))}

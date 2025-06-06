@@ -14,7 +14,9 @@ export function Header() {
   return (
     <header className="bg-blue-600 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">Investment Manager</h1>
+        <Link href="/">
+          <h1 className="text-xl font-bold">Investment Manager</h1>
+        </Link>
         <nav className="flex gap-6">
           {navItems.map(({ href, label }) => (
             <Link

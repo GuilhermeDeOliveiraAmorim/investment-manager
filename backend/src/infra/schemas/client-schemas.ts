@@ -25,10 +25,11 @@ export const createClientInputSchema = z.object({
 });
 
 export const createClientOutputSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  email: z.string().email(),
-  status: z.enum(["active", "inactive"]),
+  client: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    status: z.enum(["active", "inactive"]),
+  }),
 });
 
 export const updateClientInputSchema = z.object({

@@ -1,6 +1,4 @@
-import { Allocation } from "../../domain/allocation";
-import { Asset } from "../../domain/asset";
-import { Client } from "../../domain/client";
+import { ClientStatus } from "../../domain/client";
 import { AllocationRepository } from "../../domain/repositories/allocation-repository";
 import { AssetRepository } from "../../domain/repositories/asset-repository";
 import { ClientRepository } from "../../domain/repositories/client-repository";
@@ -10,6 +8,7 @@ import { logger } from "../../infra/logger";
 export type ClientOutputDTO = {
   id: string;
   name: string;
+  status: ClientStatus;
   totalInvested?: number;
 };
 
@@ -83,6 +82,7 @@ export class FindClientByIdUseCase {
           client: {
             id: client.id,
             name: client.name,
+            status: client.status,
             totalInvested: 0,
           },
           allocations: [],
@@ -131,6 +131,7 @@ export class FindClientByIdUseCase {
         client: {
           id: client.id,
           name: client.name,
+          status: client.status,
           totalInvested: totalInvested,
         },
         allocations: allocations,

@@ -12,9 +12,8 @@ export class Client {
     return new Client(crypto.randomUUID(), name, email, status);
   }
 
-  update(name: string, email: string, status: ClientStatus) {
+  update(name: string, status: ClientStatus) {
     this.name = name;
-    this.email = email;
     this.status = status;
   }
 }

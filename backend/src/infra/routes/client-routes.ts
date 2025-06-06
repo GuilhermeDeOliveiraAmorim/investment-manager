@@ -113,15 +113,12 @@ export async function clientRoutes(server: FastifyInstance) {
         });
       }
 
-      const { email, name, status } = parseResult.data;
+      const { name, status } = parseResult.data;
 
-      if (email === undefined || name === undefined || status === undefined) {
+      if (name === undefined || status === undefined) {
         return reply.status(400).send({
           error: "Validation failed",
           issues: [
-            ...(email === undefined
-              ? [{ path: ["email"], message: "Email is required" }]
-              : []),
             ...(name === undefined
               ? [{ path: ["name"], message: "Name is required" }]
               : []),
@@ -134,7 +131,6 @@ export async function clientRoutes(server: FastifyInstance) {
 
       const result = await clientUseCases.update.execute({
         id,
-        email,
         name,
         status,
       });

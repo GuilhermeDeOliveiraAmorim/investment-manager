@@ -6,7 +6,6 @@ import { logger } from "../../infra/logger";
 export type UpdateClientInputDTO = {
   id: string;
   name: string;
-  email: string;
   status: ClientStatus;
 };
 
@@ -51,7 +50,7 @@ export class UpdateClientUseCase {
         );
       }
 
-      client.update(input.name, input.email, input.status);
+      client.update(input.name, input.status);
 
       const output: UpdateClientOutputDTO = {
         client: await this.clientRepository.update(client),

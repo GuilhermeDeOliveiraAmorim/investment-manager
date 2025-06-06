@@ -40,13 +40,6 @@ export const updateClientInputSchema = z.object({
     .min(1, { message: "O nome não pode estar vazio." })
     .optional(),
 
-  email: z
-    .string({
-      invalid_type_error: "O email deve ser uma string.",
-    })
-    .email({ message: "O email deve ser válido." })
-    .optional(),
-
   status: z
     .enum(["active", "inactive"], {
       invalid_type_error: "O status deve ser 'active' ou 'inactive'.",
@@ -57,7 +50,6 @@ export const updateClientInputSchema = z.object({
 export const updateClientOutputSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
-  email: z.string().email(),
   status: z.enum(["active", "inactive"]),
 });
 
@@ -73,6 +65,7 @@ export const findClientByIdInputSchema = z.object({
 const clientSummarySchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  status: z.enum(["active", "inactive"]),
   totalInvested: z.number(),
 });
 

@@ -10,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@app/components/ui/card";
+import Link from "next/link";
+import { Button } from "@app/components/ui/button";
 
 export default function ClientDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +24,13 @@ export default function ClientDetailsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{client.name}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{client.name}</h1>
+
+        <Link href={`/clients/update/${client.id}`}>
+          <Button>Editar Cliente</Button>
+        </Link>
+      </div>
       <p>
         <strong>Total investido:</strong> R${" "}
         {client.totalInvested.toLocaleString()}

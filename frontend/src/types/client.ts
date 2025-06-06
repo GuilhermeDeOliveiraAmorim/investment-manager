@@ -12,9 +12,7 @@ export interface CreateClientInput {
 }
 
 export interface UpdateClientInput {
-  id: string;
   name: string;
-  email: string;
   status: "active" | "inactive";
 }
 
@@ -26,6 +24,7 @@ export interface FindClientByIdResponse {
   client: {
     id: string;
     name: string;
+    status: "active" | "inactive";
     totalInvested: number;
   };
   allocations: Array<{

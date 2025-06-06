@@ -48,9 +48,11 @@ export const updateClientInputSchema = z.object({
 });
 
 export const updateClientOutputSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  status: z.enum(["active", "inactive"]),
+  client: z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    status: z.enum(["active", "inactive"]),
+  }),
 });
 
 export const findClientByIdInputSchema = z.object({

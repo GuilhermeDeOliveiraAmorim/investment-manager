@@ -106,6 +106,8 @@ export async function clientRoutes(server: FastifyInstance) {
 
       const parseResult = updateClientInputSchema.safeParse(request.body);
 
+      console.log("parseResult", parseResult);
+
       if (!parseResult.success) {
         return reply.status(400).send({
           error: "Validation failed",
@@ -134,6 +136,8 @@ export async function clientRoutes(server: FastifyInstance) {
         name,
         status,
       });
+
+      console.log("result", result);
 
       return reply.status(200).send(result);
     },

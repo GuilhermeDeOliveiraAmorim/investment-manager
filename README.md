@@ -32,7 +32,8 @@ investment-manager/
 
 ---
 
-🔑 Configuração do ambiente
+## 🔑 Configuração do ambiente
+
 Antes de rodar as migrações e o seed, é necessário criar um arquivo .env dentro da pasta backend/ com a variável DATABASE_URL apontando para o banco MySQL. Exemplo:
 
 ```bash
@@ -69,7 +70,7 @@ npx prisma db seed
 
 ---
 
-📘 Documentação da API
+## 📘 Documentação da API
 
 A documentação interativa da API está disponível após o ambiente estar no ar:
 

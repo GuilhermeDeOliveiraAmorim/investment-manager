@@ -55,3 +55,11 @@ docker exec -it investments-backend sh
 ```bash
 npx prisma db seed
 ```
+
+---
+
+📘 Documentação da API
+
+A documentação interativa da API está disponível após o ambiente estar no ar:
+
+👉 http://localhost:3001/docs

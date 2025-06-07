@@ -32,6 +32,17 @@ investment-manager/
 
 ---
 
+🔑 Configuração do ambiente
+Antes de rodar as migrações e o seed, é necessário criar um arquivo .env dentro da pasta backend/ com a variável DATABASE_URL apontando para o banco MySQL. Exemplo:
+
+```bash
+DATABASE_URL="mysql://root:root@mysql:3306/investments_db"
+```
+
+Certifique-se de que os dados (usuário, senha, host e nome do banco) estão de acordo com a configuração do seu docker-compose.yml.
+
+---
+
 ## ⚙️ Subindo o ambiente
 
 ```bash
